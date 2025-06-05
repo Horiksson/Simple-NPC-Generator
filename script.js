@@ -11,15 +11,99 @@ const backgrounds = [
     'Acolyte', 'Criminal', 'Folk Hero', 'Noble', 'Sage', 'Soldier', 'Urchin', 'Guild Artisan'
 ];
 
+const backgroundDefinitions = {
+    'Acolyte': {
+        description: 'You trained in a religious organization or temple, learning sacred rites and performing religious ceremonies. You have a deep connection to your faith and the divine.',
+        bonuses: {
+            skills: ['Insight', 'Religion'],
+            languages: 2,
+            equipment: 'Holy symbol, prayer book, 5 sticks of incense, vestments, common clothes, belt pouch with 15 gp'
+        }
+    },
+    'Criminal': {
+        description: 'You lived a life of crime, learning to survive on the streets and in the shadows. You have contacts in the criminal underworld and know how to get things done discreetly.',
+        bonuses: {
+            skills: ['Deception', 'Stealth'],
+            tools: 'Thieves\' tools',
+            equipment: 'Crowbar, dark common clothes with hood, belt pouch with 15 gp'
+        }
+    },
+    'Folk Hero': {
+        description: 'You come from a humble social rank, but you did something extraordinary that made you a local hero. You have a strong connection to the common people and their struggles.',
+        bonuses: {
+            skills: ['Animal Handling', 'Survival'],
+            tools: 'One type of artisan\'s tools, vehicles (land)',
+            equipment: 'Artisan\'s tools, shovel, iron pot, common clothes, belt pouch with 10 gp'
+        }
+    },
+    'Noble': {
+        description: 'You were born into a wealthy family with significant social standing. You understand the intricacies of high society and have connections among the upper class.',
+        bonuses: {
+            skills: ['History', 'Persuasion'],
+            languages: 1,
+            equipment: 'Fine clothes, signet ring, scroll of pedigree, purse with 25 gp'
+        }
+    },
+    'Sage': {
+        description: 'You spent years learning the lore of the multiverse, becoming a scholar in your field. You have a vast knowledge of history, magic, and the world\'s mysteries.',
+        bonuses: {
+            skills: ['Arcana', 'History'],
+            languages: 2,
+            equipment: 'Bottle of black ink, quill, small knife, letter from a dead colleague, common clothes, belt pouch with 10 gp'
+        }
+    },
+    'Soldier': {
+        description: 'You trained as a warrior, serving in an army or militia. You understand military life, tactics, and the importance of discipline and teamwork.',
+        bonuses: {
+            skills: ['Athletics', 'Intimidation'],
+            tools: 'One type of gaming set, vehicles (land)',
+            equipment: 'Insignia of rank, trophy from a fallen enemy, set of bone dice, common clothes, belt pouch with 10 gp'
+        }
+    },
+    'Urchin': {
+        description: 'You grew up on the streets alone, orphaned, and poor. You had no one to watch over you or to provide for you, so you learned to provide for yourself.',
+        bonuses: {
+            skills: ['Sleight of Hand', 'Stealth'],
+            tools: 'Disguise kit, thieves\' tools',
+            equipment: 'Small knife, map of your hometown, pet mouse, token from your parents, common clothes, belt pouch with 10 gp'
+        }
+    },
+    'Guild Artisan': {
+        description: 'You are a member of an artisan\'s guild, skilled in a particular field and closely associated with other artisans. You understand the value of quality work and have connections in the business world.',
+        bonuses: {
+            skills: ['Insight', 'Persuasion'],
+            tools: 'One type of artisan\'s tools',
+            languages: 1,
+            equipment: 'Artisan\'s tools, letter of introduction from your guild, traveler\'s clothes, belt pouch with 15 gp'
+        }
+    }
+};
+
 const personalityTraits = [
-    'Brave and courageous in the face of danger',
-    'Quiet and reserved, preferring to observe rather than speak',
-    'Outgoing and friendly, always ready to make new friends',
-    'Suspicious of strangers and slow to trust',
-    'Curious and eager to learn about the world',
-    'Practical and down-to-earth, focused on survival',
-    'Charismatic and persuasive, able to talk their way out of trouble',
-    'Mysterious and enigmatic, keeping their true nature hidden'
+    'Brave and courageous in the face of danger, always willing to stand up for what is right. They have a strong moral compass and inspire others with their unwavering determination.',
+    'Quiet and reserved, preferring to observe rather than speak. They are thoughtful and analytical, often noticing details that others miss.',
+    'Outgoing and friendly, always ready to make new friends and share stories. They have a natural charm that makes others feel comfortable and welcome.',
+    'Suspicious of strangers and slow to trust, having learned the hard way that not everyone has good intentions. They are cautious but loyal to those who earn their trust.',
+    'Curious and eager to learn about the world, constantly seeking new knowledge and experiences. They have a childlike wonder that makes them excellent problem-solvers.',
+    'Practical and down-to-earth, focused on survival and common sense solutions. They value efficiency and reliability above all else.',
+    'Charismatic and persuasive, able to talk their way out of trouble and into opportunities. They have a silver tongue and know how to read people.',
+    'Mysterious and enigmatic, keeping their true nature hidden behind a carefully crafted facade. They enjoy the intrigue and power that comes with being unknowable.',
+    'Optimistic and cheerful, always seeing the bright side of any situation. Their positive attitude is infectious and helps lift the spirits of those around them.',
+    'Pragmatic and calculating, always thinking several steps ahead. They prefer to plan carefully rather than act impulsively.',
+    'Honorable and just, with a strong sense of duty and responsibility. They believe in doing what is right, even when it is difficult.',
+    'Mischievous and playful, always looking for fun and excitement. They have a quick wit and love to play pranks on their friends.',
+    'Serious and focused, dedicated to their goals and responsibilities. They have little patience for frivolity or wasted time.',
+    'Empathetic and caring, always putting others\' needs before their own. They have a natural ability to understand and help people.',
+    'Ambitious and driven, constantly striving to improve and achieve more. They set high standards for themselves and others.',
+    'Humble and modest, never seeking recognition for their deeds. They believe that good actions should speak for themselves.',
+    'Witty and sarcastic, using humor to cope with difficult situations. They have a sharp tongue but a kind heart.',
+    'Disciplined and organized, maintaining strict routines and high standards. They believe that success comes from careful planning and hard work.',
+    'Free-spirited and spontaneous, living in the moment and following their heart. They value personal freedom above all else.',
+    'Protective and nurturing, always looking out for the well-being of others. They have a strong maternal/paternal instinct.',
+    'Analytical and logical, approaching problems with careful consideration. They prefer facts and evidence over emotions and intuition.',
+    'Artistic and creative, seeing beauty and potential in everything. They express themselves through various forms of art.',
+    'Competitive and driven, always striving to be the best. They take great pride in their achievements and abilities.',
+    'Diplomatic and tactful, skilled at navigating social situations. They know how to maintain peace and harmony in groups.'
 ];
 
 const physicalDescriptions = [
@@ -168,6 +252,12 @@ const racePhysicalDescriptions = {
 // Add gender to the NPC generation
 const genders = ['Male', 'Female'];
 
+// Add Dragonborn colors
+const dragonbornColors = [
+    'Red', 'Blue', 'Green', 'Black', 'White',  // Chromatic
+    'Gold', 'Silver', 'Bronze', 'Copper', 'Brass'  // Metallic
+];
+
 // Function to get random element from array
 function getRandomElement(array) {
     return array[Math.floor(Math.random() * array.length)];
@@ -193,6 +283,11 @@ function getRandomSubrace(race) {
         return getRandomElement(subraces[race]);
     }
     return null;
+}
+
+// Function to get a random dragonborn color
+function getRandomDragonbornColor() {
+    return getRandomElement(dragonbornColors);
 }
 
 // Function to apply racial and subrace bonuses
@@ -440,78 +535,65 @@ function generateName(race, gender) {
     return `${getRandomElement(genderList.firstNames)} ${getRandomElement(genderList.lastNames)}`;
 }
 
-// Function to generate a random number within a range
+// Function to get random number in range
 function getRandomInRange(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-// Function to generate a specific height within a range
+// Function to generate specific height based on range
 function generateSpecificHeight(heightRange, isFemale) {
-    // Extract min and max heights from the range string (e.g., "5'0\" to 7'0\"")
-    const match = heightRange.match(/(\d+)'(\d+)" to (\d+)'(\d+)"/);
-    if (!match) return heightRange;
-
-    const minFeet = parseInt(match[1]);
-    const minInches = parseInt(match[2]);
-    const maxFeet = parseInt(match[3]);
-    const maxInches = parseInt(match[4]);
-
-    // Convert to total inches for easier calculation
-    const minTotalInches = minFeet * 12 + minInches;
-    const maxTotalInches = maxFeet * 12 + maxInches;
-
-    // Generate random height in inches
-    let randomInches = getRandomInRange(minTotalInches, maxTotalInches);
+    // Extract numbers from height range string (e.g., "5'0\" to 7'0\"" -> [5, 0, 7, 0])
+    const numbers = heightRange.match(/\d+/g).map(Number);
+    let minFeet = numbers[0];
+    let minInches = numbers[1];
+    let maxFeet = numbers[2];
+    let maxInches = numbers[3];
     
-    // Reduce height by 10% for female NPCs
-    if (isFemale) {
-        randomInches = Math.floor(randomInches * 0.9);
-    }
+    // Convert to total inches for easier calculation
+    const minTotalInches = (minFeet * 12) + minInches;
+    const maxTotalInches = (maxFeet * 12) + maxInches;
+    
+    // Generate random height in inches
+    const totalInches = getRandomInRange(minTotalInches, maxTotalInches);
     
     // Convert back to feet and inches
-    const feet = Math.floor(randomInches / 12);
-    const inches = randomInches % 12;
-
+    const feet = Math.floor(totalInches / 12);
+    const inches = totalInches % 12;
+    
     return `${feet}'${inches}"`;
 }
 
-// Function to generate a specific weight within a range
+// Function to generate specific weight based on range
 function generateSpecificWeight(weightRange, isFemale) {
-    // Extract min and max weights from the range string (e.g., "120-200 lbs")
-    const match = weightRange.match(/(\d+)-(\d+) lbs/);
-    if (!match) return weightRange;
-
-    const minWeight = parseInt(match[1]);
-    const maxWeight = parseInt(match[2]);
-
+    // Extract numbers from weight range string (e.g., "120-200 lbs" -> [120, 200])
+    const numbers = weightRange.match(/\d+/g).map(Number);
+    const minWeight = numbers[0];
+    const maxWeight = numbers[1];
+    
     // Generate random weight
-    let randomWeight = getRandomInRange(minWeight, maxWeight);
+    const weight = getRandomInRange(minWeight, maxWeight);
     
-    // Reduce weight by 10% for female NPCs
-    if (isFemale) {
-        randomWeight = Math.floor(randomWeight * 0.9);
-    }
-    
-    return `${randomWeight} lbs`;
+    return `${weight} lbs`;
 }
 
-// Function to get a race-specific physical description with specific measurements
+// Function to get race-specific physical description with specific measurements
 function getRacePhysicalDescription(race, isFemale) {
-    const baseDescription = getRandomElement(racePhysicalDescriptions[race] || racePhysicalDescriptions.Human);
+    const descriptions = racePhysicalDescriptions[race] || physicalDescriptions;
+    const baseDescription = getRandomElement(descriptions);
     
     // Extract height and weight ranges
-    const heightMatch = baseDescription.match(/([^,]+), weight/);
-    const weightMatch = baseDescription.match(/weight ([^,]+),/);
+    const heightMatch = baseDescription.match(/\d+'[0-9]+\" to \d+'[0-9]+\"/);
+    const weightMatch = baseDescription.match(/\d+-\d+ lbs/);
     
     if (heightMatch && weightMatch) {
-        const heightRange = heightMatch[1];
-        const weightRange = weightMatch[1];
+        const heightRange = heightMatch[0];
+        const weightRange = weightMatch[0];
         
         // Generate specific measurements
         const specificHeight = generateSpecificHeight(heightRange, isFemale);
         const specificWeight = generateSpecificWeight(weightRange, isFemale);
         
-        // Replace the ranges with specific measurements
+        // Replace ranges with specific measurements
         return baseDescription
             .replace(heightRange, specificHeight)
             .replace(weightRange, specificWeight);
@@ -520,7 +602,7 @@ function getRacePhysicalDescription(race, isFemale) {
     return baseDescription;
 }
 
-// Function to populate dropdown menus
+// Function to populate dropdowns
 function populateDropdowns() {
     const raceSelect = document.getElementById('raceSelect');
     const genderSelect = document.getElementById('genderSelect');
@@ -535,6 +617,7 @@ function populateDropdowns() {
     });
 
     // Populate gender dropdown
+    const genders = ['Male', 'Female'];
     genders.forEach(gender => {
         const option = document.createElement('option');
         option.value = gender;
@@ -558,79 +641,134 @@ function checkSelections() {
     const classSelect = document.getElementById('classSelect');
     const generateBtn = document.getElementById('generateBtn');
 
-    if (raceSelect && genderSelect && classSelect && generateBtn) {
-        generateBtn.disabled = !(raceSelect.value && genderSelect.value && classSelect.value);
-    }
+    generateBtn.disabled = !(raceSelect.value && genderSelect.value && classSelect.value);
 }
 
-// Function to generate a random NPC (original functionality)
+// Function to generate a random NPC
 function generateRandomNPC() {
     const race = getRandomElement(races);
-    const subraceObj = getRandomSubrace(race);
-    const subrace = subraceObj ? subraceObj.name : null;
+    const gender = getRandomElement(['Male', 'Female']);
     const characterClass = getRandomElement(classes);
     const background = getRandomElement(backgrounds);
     const personality = getRandomElement(personalityTraits);
-    const gender = getRandomElement(genders);
     const isFemale = gender === 'Female';
-    const description = getRacePhysicalDescription(race, isFemale);
-    let abilities = generateAbilityScoresForClass(characterClass);
-    abilities = applyRacialBonuses(abilities, race, subraceObj);
+    const physicalDescription = getRacePhysicalDescription(race, isFemale);
     const name = generateName(race, gender);
+    const abilities = generateAbilityScoresForClass(characterClass);
+    const subraceObj = getRandomSubrace(race);
+    const finalAbilities = applyRacialBonuses(abilities, race, subraceObj);
+    const dragonColor = race === 'Dragonborn' ? getRandomDragonbornColor() : null;
 
     return {
         name,
         race,
-        subrace,
         gender,
-        characterClass,
+        class: characterClass,
         background,
         personality,
-        description,
-        abilities
+        physicalDescription,
+        abilities: finalAbilities,
+        dragonColor
     };
 }
 
-// Function to generate a complete NPC with selected options
+// Function to generate an NPC based on selections
 function generateSelectedNPC() {
     const race = document.getElementById('raceSelect').value;
     const gender = document.getElementById('genderSelect').value;
     const characterClass = document.getElementById('classSelect').value;
-    
-    const subraceObj = getRandomSubrace(race);
-    const subrace = subraceObj ? subraceObj.name : null;
     const background = getRandomElement(backgrounds);
     const personality = getRandomElement(personalityTraits);
     const isFemale = gender === 'Female';
-    const description = getRacePhysicalDescription(race, isFemale);
-    let abilities = generateAbilityScoresForClass(characterClass);
-    abilities = applyRacialBonuses(abilities, race, subraceObj);
+    const physicalDescription = getRacePhysicalDescription(race, isFemale);
     const name = generateName(race, gender);
+    const abilities = generateAbilityScoresForClass(characterClass);
+    const subraceObj = getRandomSubrace(race);
+    const finalAbilities = applyRacialBonuses(abilities, race, subraceObj);
+    const dragonColor = race === 'Dragonborn' ? getRandomDragonbornColor() : null;
 
     return {
         name,
         race,
-        subrace,
         gender,
-        characterClass,
+        class: characterClass,
         background,
         personality,
-        description,
-        abilities
+        physicalDescription,
+        abilities: finalAbilities,
+        dragonColor
     };
 }
 
 // Function to update the UI with NPC data
 function updateNPCDisplay(npc) {
     document.getElementById('npcName').textContent = npc.name;
+    
+    // Update race display to include subrace or dragonborn color
     let raceText = npc.race;
-    if (npc.subrace) {
-        raceText = `${npc.subrace} ${npc.race}`;
+    if (npc.race === 'Dragonborn') {
+        raceText = `${npc.race} (${npc.dragonColor})`;
+    } else {
+        const subraceObj = getRandomSubrace(npc.race);
+        if (subraceObj) {
+            raceText = `${npc.race} (${subraceObj.name})`;
+        }
     }
-    document.getElementById('npcRace').textContent = `${raceText} • ${npc.characterClass} • ${npc.gender}`;
-    document.getElementById('npcDescription').textContent = npc.description;
-    document.getElementById('npcPersonality').textContent = npc.personality;
-    document.getElementById('npcBackground').textContent = `Background: ${npc.background}`;
+    document.getElementById('npcRace').textContent = `${raceText} • ${npc.class}`;
+    
+    // Update physical description
+    document.getElementById('npcDescription').textContent = npc.physicalDescription;
+    
+    // Update personality details
+    const personalityTraitsList = document.getElementById('personalityTraitsList');
+    personalityTraitsList.innerHTML = '';
+    
+    // Split the personality description into sentences and create list items
+    const sentences = npc.personality.split('. ').filter(s => s.trim().length > 0);
+    sentences.forEach(sentence => {
+        const traitItem = document.createElement('li');
+        traitItem.textContent = sentence.trim();
+        personalityTraitsList.appendChild(traitItem);
+    });
+
+    document.getElementById('npcBackground').textContent = npc.background;
+
+    // Update background details
+    const backgroundDef = backgroundDefinitions[npc.background];
+    if (backgroundDef) {
+        document.getElementById('backgroundDescription').textContent = backgroundDef.description;
+        
+        const bonusesList = document.getElementById('backgroundBonusesList');
+        bonusesList.innerHTML = '';
+        
+        // Add skills
+        if (backgroundDef.bonuses.skills) {
+            const skillsItem = document.createElement('li');
+            skillsItem.textContent = `Skills: ${backgroundDef.bonuses.skills.join(', ')}`;
+            bonusesList.appendChild(skillsItem);
+        }
+        
+        // Add languages
+        if (backgroundDef.bonuses.languages) {
+            const languagesItem = document.createElement('li');
+            languagesItem.textContent = `Additional Languages: ${backgroundDef.bonuses.languages}`;
+            bonusesList.appendChild(languagesItem);
+        }
+        
+        // Add tools
+        if (backgroundDef.bonuses.tools) {
+            const toolsItem = document.createElement('li');
+            toolsItem.textContent = `Tools: ${backgroundDef.bonuses.tools}`;
+            bonusesList.appendChild(toolsItem);
+        }
+        
+        // Add equipment
+        if (backgroundDef.bonuses.equipment) {
+            const equipmentItem = document.createElement('li');
+            equipmentItem.textContent = `Equipment: ${backgroundDef.bonuses.equipment}`;
+            bonusesList.appendChild(equipmentItem);
+        }
+    }
 
     // Update ability scores
     document.getElementById('strScore').textContent = npc.abilities.str;
@@ -675,4 +813,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initial check of selections
     checkSelections();
-}); 
+});

@@ -223,4 +223,78 @@ header p {
 .secondary-btn:hover {
     background-color: var(--secondary-color);
     transform: translateY(-2px);
+}
+
+.background-details {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: var(--primary-color);
+    border-radius: 5px;
+}
+
+.background-details p {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.background-bonuses h4 {
+    color: var(--accent-color);
+    margin-bottom: 0.5rem;
+}
+
+.background-bonuses ul {
+    list-style-type: none;
+    padding-left: 1rem;
+}
+
+.background-bonuses li {
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+    opacity: 0.9;
+}
+
+.background-bonuses li:before {
+    content: "•";
+    color: var(--accent-color);
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+}
+
+.personality-details {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: var(--primary-color);
+    border-radius: 5px;
+}
+
+.personality-details p {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.personality-traits h4 {
+    color: var(--accent-color);
+    margin-bottom: 0.5rem;
+}
+
+.personality-traits ul {
+    list-style-type: none;
+    padding-left: 1rem;
+}
+
+.personality-traits li {
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+    opacity: 0.9;
+}
+
+.personality-traits li:before {
+    content: "•";
+    color: var(--accent-color);
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
 } 
