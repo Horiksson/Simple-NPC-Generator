@@ -1,0 +1,8 @@
+# Configuration files with sensitive data
+config.js
+
+# Other common exclusions
+node_modules/
+.env
+*.log
+.DS_Store 

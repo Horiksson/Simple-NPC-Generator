@@ -1,3 +1,6 @@
+// Import the config
+import config from './config.js';
+
 // Data for NPC generation
 const races = [
     'Human', 'Elf', 'Dwarf', 'Halfling', 'Gnome', 'Half-Orc', 'Tiefling', 'Dragonborn'
@@ -614,18 +617,18 @@ function generateSpecificHeight(heightRange, isFemale) {
     let minInches = numbers[1];
     let maxFeet = numbers[2];
     let maxInches = numbers[3];
-    
+
     // Convert to total inches for easier calculation
     const minTotalInches = (minFeet * 12) + minInches;
     const maxTotalInches = (maxFeet * 12) + maxInches;
-    
+
     // Generate random height in inches
     const totalInches = getRandomInRange(minTotalInches, maxTotalInches);
     
     // Convert back to feet and inches
     const feet = Math.floor(totalInches / 12);
     const inches = totalInches % 12;
-    
+
     return `${feet}'${inches}"`;
 }
 
@@ -635,7 +638,7 @@ function generateSpecificWeight(weightRange, isFemale) {
     const numbers = weightRange.match(/\d+/g).map(Number);
     const minWeight = numbers[0];
     const maxWeight = numbers[1];
-    
+
     // Generate random weight
     const weight = getRandomInRange(minWeight, maxWeight);
     
@@ -670,9 +673,21 @@ function getRacePhysicalDescription(race, isFemale) {
 
 // Function to populate dropdowns
 function populateDropdowns() {
+    console.log('Populating dropdowns...'); // Debug log
+    
     const raceSelect = document.getElementById('raceSelect');
     const genderSelect = document.getElementById('genderSelect');
     const classSelect = document.getElementById('classSelect');
+
+    if (!raceSelect || !genderSelect || !classSelect) {
+        console.error('Could not find one or more select elements');
+        return;
+    }
+
+    // Clear existing options except the first one
+    raceSelect.innerHTML = '<option value="">Select Race</option>';
+    genderSelect.innerHTML = '<option value="">Select Gender</option>';
+    classSelect.innerHTML = '<option value="">Select Class</option>';
 
     // Populate race dropdown
     races.forEach(race => {
@@ -698,6 +713,8 @@ function populateDropdowns() {
         option.textContent = characterClass;
         classSelect.appendChild(option);
     });
+
+    console.log('Dropdowns populated successfully'); // Debug log
 }
 
 // Function to check if all selections are made
@@ -707,8 +724,8 @@ function checkSelections() {
     const classSelect = document.getElementById('classSelect');
     const generateBtn = document.getElementById('generateBtn');
 
-    generateBtn.disabled = !(raceSelect.value && genderSelect.value && classSelect.value);
-}
+        generateBtn.disabled = !(raceSelect.value && genderSelect.value && classSelect.value);
+    }
 
 // Function to generate a backstory based on background
 function generateBackstory(background, name, race, gender) {
@@ -997,10 +1014,81 @@ function updateNPCDisplay(npc) {
     document.getElementById('intScore').textContent = npc.abilities.int;
     document.getElementById('wisScore').textContent = npc.abilities.wis;
     document.getElementById('chaScore').textContent = npc.abilities.cha;
+
+    // Generate the NPC image
+    generateNPCImage(npc);
+}
+
+// Add this function to generate the image prompt
+function generateImagePrompt(npc) {
+    const race = npc.race.toLowerCase();
+    const gender = npc.gender.toLowerCase();
+    const characterClass = npc.class.toLowerCase();
+    const physicalDesc = npc.physicalDescription.toLowerCase();
+    
+    return `A detailed portrait of a ${gender} ${race} ${characterClass} in D&D style. ${physicalDesc}. 
+    The character has a ${npc.personality.split('.')[0].toLowerCase()}. 
+    The image should be in a fantasy art style, suitable for a D&D character portrait. 
+    The background should be subtle and not distracting.`;
+}
+
+// Add this function to generate the image
+async function generateNPCImage(npc) {
+    const imageContainer = document.getElementById('npcImage');
+    const loadingSpinner = document.getElementById('imageLoading');
+    
+    // Show loading spinner
+    imageContainer.style.display = 'none';
+    loadingSpinner.style.display = 'flex';
+    
+    try {
+        const prompt = generateImagePrompt(npc);
+        
+        const response = await fetch('https://api.stability.ai/v1/generation/stable-diffusion-xl-1024-v1-0/text-to-image', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${config.STABLE_DIFFUSION_API_KEY}`,
+            },
+            body: JSON.stringify({
+                text_prompts: [
+                    {
+                        text: prompt,
+                        weight: 1
+                    }
+                ],
+                cfg_scale: 7,
+                height: 1024,
+                width: 1024,
+                samples: 1,
+                steps: 30,
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        
+        // Convert the base64 image to a URL
+        const imageUrl = `data:image/png;base64,${result.artifacts[0].base64}`;
+        
+        // Update the image
+        imageContainer.src = imageUrl;
+        imageContainer.style.display = 'block';
+    } catch (error) {
+        console.error('Error generating image:', error);
+        // You might want to show an error message to the user here
+    } finally {
+        loadingSpinner.style.display = 'none';
+    }
 }
 
 // Initialize the page
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM Content Loaded'); // Debug log
+    
     // Populate dropdowns
     populateDropdowns();
     
@@ -1011,6 +1099,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const generateBtn = document.getElementById('generateBtn');
     const randomBtn = document.getElementById('randomBtn');
 
+    console.log('Elements found:', { raceSelect, genderSelect, classSelect, generateBtn, randomBtn }); // Debug log
+
     if (raceSelect) raceSelect.addEventListener('change', checkSelections);
     if (genderSelect) genderSelect.addEventListener('change', checkSelections);
     if (classSelect) classSelect.addEventListener('change', checkSelections);
@@ -1018,6 +1108,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Set up event listener for generate button
     if (generateBtn) {
         generateBtn.addEventListener('click', () => {
+            console.log('Generate button clicked'); // Debug log
             const npc = generateSelectedNPC();
             updateNPCDisplay(npc);
         });
@@ -1026,6 +1117,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Set up event listener for random button
     if (randomBtn) {
         randomBtn.addEventListener('click', () => {
+            console.log('Random button clicked'); // Debug log
             const npc = generateRandomNPC();
             updateNPCDisplay(npc);
         });
@@ -1033,4 +1125,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initial check of selections
     checkSelections();
-});
+}); 

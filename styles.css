@@ -299,4 +299,30 @@ header p {
     display: inline-block;
     width: 1em;
     margin-left: -1em;
+}
+
+.npc-image-container {
+    width: 100%;
+    max-width: 512px;
+    margin: 1rem auto;
+    text-align: center;
+    min-height: 512px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+#npcImage {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.loading-spinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 512px;
+    color: #666;
+    font-style: italic;
 } 
