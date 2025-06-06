@@ -3,115 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D&D 5E NPC Generator</title>
+    <title>D&D NPC Generator</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>D&D 5E NPC Generator</h1>
-            <p>Generate random NPCs for your Dungeons & Dragons campaign</p>
-        </header>
-
-        <main>
-            <div class="controls">
-                <div class="selection-controls">
-                    <div class="select-group">
-                        <label for="raceSelect">Race:</label>
-                        <select id="raceSelect">
-                            <option value="">Select Race</option>
-                        </select>
-                    </div>
-                    <div class="select-group">
-                        <label for="genderSelect">Gender:</label>
-                        <select id="genderSelect">
-                            <option value="">Select Gender</option>
-                        </select>
-                    </div>
-                    <div class="select-group">
-                        <label for="classSelect">Class:</label>
-                        <select id="classSelect">
-                            <option value="">Select Class</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="button-group">
-                    <button id="generateBtn" class="primary-btn" disabled>Generate NPC</button>
-                    <button id="randomBtn" class="secondary-btn">Totally Random</button>
-                </div>
+        <h1>D&D NPC Generator</h1>
+        
+        <div class="controls">
+            <div class="select-group">
+                <label for="raceSelect">Race:</label>
+                <select id="raceSelect">
+                    <option value="">Select Race</option>
+                </select>
             </div>
-
-            <div class="npc-card" id="npcCard">
-                <div class="npc-header">
-                    <h2 id="npcName">NPC Name</h2>
-                    <span id="npcRace" class="race-class">Race • Class</span>
-                </div>
-                <div class="npc-image-container">
-                    <img id="npcImage" src="" alt="NPC Portrait" style="display: none;">
-                    <div id="imageLoading" class="loading-spinner" style="display: none;">Generating image...</div>
-                </div>
-
-                <div class="npc-details">
-                    <div class="detail-section">
-                        <h3>Physical Description</h3>
-                        <p id="npcDescription">Physical description will appear here...</p>
+            
+            <div class="select-group">
+                <label for="genderSelect">Gender:</label>
+                <select id="genderSelect">
+                    <option value="">Select Gender</option>
+                </select>
+            </div>
+            
+            <div class="select-group">
+                <label for="classSelect">Class:</label>
+                <select id="classSelect">
+                    <option value="">Select Class</option>
+                </select>
+            </div>
+            
+            <button id="generateBtn" disabled>Generate NPC</button>
+            <button id="randomBtn">Random NPC</button>
+        </div>
+        
+        <div class="npc-details">
+            <h2 id="npcName" class="centered">NPC Name</h2>
+            <div class="npc-basic-info">
+                <span id="npcRace">Race</span>
+                <span class="separator">•</span>
+                <span id="npcGender">Gender</span>
+                <span class="separator">•</span>
+                <span id="npcClass">Class</span>
+                <span class="separator">•</span>
+                <span id="npcBackground">Background</span>
+            </div>
+            
+            <div class="detail-section">
+                <h3>Physical Description</h3>
+                <p id="npcPhysical">Physical description will appear here.</p>
+            </div>
+            
+            <div class="background-details">
+                <h3>Background Details</h3>
+                <p id="backgroundDescription">Background description will appear here.</p>
+                <h4>Background Bonuses</h4>
+                <ul id="backgroundBonusesList">
+                    <!-- Background bonuses will be populated here -->
+                </ul>
+            </div>
+            
+            <div class="detail-section">
+                <h3>Backstory</h3>
+                <p id="npcBackstory">Backstory will appear here.</p>
+            </div>
+            
+            <div class="ability-scores">
+                <h3>Ability Scores</h3>
+                <div class="ability-grid">
+                    <div class="ability">
+                        <span>STR</span>
+                        <span id="npcStrength">10</span>
                     </div>
-
-                    <div class="detail-section">
-                        <h3>Personality</h3>
-                        <div id="personalityDetails" class="personality-details">
-                            <div class="personality-traits">
-                                <h4>Key Traits:</h4>
-                                <ul id="personalityTraitsList"></ul>
-                            </div>
-                        </div>
+                    <div class="ability">
+                        <span>DEX</span>
+                        <span id="npcDexterity">10</span>
                     </div>
-
-                    <div class="detail-section">
-                        <h3>Background</h3>
-                        <p id="npcBackground">Background information will appear here...</p>
-                        <div id="backgroundDetails" class="background-details">
-                            <p id="backgroundDescription"></p>
-                            <div class="background-bonuses">
-                                <h4>Background Bonuses:</h4>
-                                <ul id="backgroundBonusesList"></ul>
-                            </div>
-                        </div>
+                    <div class="ability">
+                        <span>CON</span>
+                        <span id="npcConstitution">10</span>
                     </div>
-
-                    <div class="detail-section">
-                        <h3>Abilities</h3>
-                        <div class="ability-scores">
-                            <div class="ability">
-                                <span class="ability-name">STR</span>
-                                <span id="strScore" class="ability-score">10</span>
-                            </div>
-                            <div class="ability">
-                                <span class="ability-name">DEX</span>
-                                <span id="dexScore" class="ability-score">10</span>
-                            </div>
-                            <div class="ability">
-                                <span class="ability-name">CON</span>
-                                <span id="conScore" class="ability-score">10</span>
-                            </div>
-                            <div class="ability">
-                                <span class="ability-name">INT</span>
-                                <span id="intScore" class="ability-score">10</span>
-                            </div>
-                            <div class="ability">
-                                <span class="ability-name">WIS</span>
-                                <span id="wisScore" class="ability-score">10</span>
-                            </div>
-                            <div class="ability">
-                                <span class="ability-name">CHA</span>
-                                <span id="chaScore" class="ability-score">10</span>
-                            </div>
-                        </div>
+                    <div class="ability">
+                        <span>INT</span>
+                        <span id="npcIntelligence">10</span>
+                    </div>
+                    <div class="ability">
+                        <span>WIS</span>
+                        <span id="npcWisdom">10</span>
+                    </div>
+                    <div class="ability">
+                        <span>CHA</span>
+                        <span id="npcCharisma">10</span>
                     </div>
                 </div>
             </div>
-        </main>
+        </div>
     </div>
-    <script type="module" src="script.js"></script>
+    
+    <script src="config.js"></script>
+    <script src="script.js"></script>
 </body>
 </html> 

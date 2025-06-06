@@ -1,6 +1,4 @@
-// Import the config
-import config from './config.js';
-
+// Configuration is loaded from config.js
 // Data for NPC generation
 const races = [
     'Human', 'Elf', 'Dwarf', 'Halfling', 'Gnome', 'Half-Orc', 'Tiefling', 'Dragonborn'
@@ -11,74 +9,72 @@ const classes = [
 ];
 
 const backgrounds = [
-    'Acolyte', 'Criminal', 'Folk Hero', 'Noble', 'Sage', 'Soldier', 'Urchin', 'Guild Artisan',
-    'Charlatan', 'Entertainer', 'Hermit', 'Outlander', 'Haunted One', 'City Watch', 'Clan Crafter', 'Courtier'
+    'Acolyte', 'Criminal', 'Folk Hero', 'Noble', 'Sage', 'Soldier', 'Urchin', 'Guild Artisan'
 ];
 
 const backgroundDefinitions = {
     'Acolyte': {
-        description: 'You trained in a religious organization or temple, learning sacred rites and performing religious ceremonies. You have a deep connection to your faith and the divine.',
+        description: 'You trained in a religious organization or temple, learning sacred rites and providing spiritual guidance.',
         bonuses: {
             skills: ['Insight', 'Religion'],
-            languages: 2,
-            equipment: 'Holy symbol, prayer book, 5 sticks of incense, vestments, common clothes, belt pouch with 15 gp'
+            languages: 'Two of your choice',
+            equipment: 'A holy symbol, prayer book or prayer wheel, 5 sticks of incense, vestments, common clothes, and a belt pouch containing 15 gp'
         }
     },
     'Criminal': {
-        description: 'You lived a life of crime, learning to survive on the streets and in the shadows. You have contacts in the criminal underworld and know how to get things done discreetly.',
+        description: 'You lived a life of crime, learning to survive on the streets and in the shadows.',
         bonuses: {
             skills: ['Deception', 'Stealth'],
-            tools: 'Thieves\' tools',
-            equipment: 'Crowbar, dark common clothes with hood, belt pouch with 15 gp'
+            languages: 'None',
+            equipment: 'A crowbar, a set of dark common clothes including a hood, and a belt pouch containing 15 gp'
         }
     },
     'Folk Hero': {
-        description: 'You come from a humble social rank, but you did something extraordinary that made you a local hero. You have a strong connection to the common people and their struggles.',
+        description: 'You came from a humble social rank, but something happened that made you stand out and become a local hero.',
         bonuses: {
             skills: ['Animal Handling', 'Survival'],
-            tools: 'One type of artisan\'s tools, vehicles (land)',
-            equipment: 'Artisan\'s tools, shovel, iron pot, common clothes, belt pouch with 10 gp'
+            languages: 'None',
+            equipment: 'A set of artisan\'s tools (one of your choice), a shovel, an iron pot, a set of common clothes, and a belt pouch containing 10 gp'
         }
     },
     'Noble': {
-        description: 'You were born into a wealthy family with significant social standing. You understand the intricacies of high society and have connections among the upper class.',
+        description: 'You understand wealth, power, and privilege, and carry yourself with a regal bearing.',
         bonuses: {
             skills: ['History', 'Persuasion'],
-            languages: 1,
-            equipment: 'Fine clothes, signet ring, scroll of pedigree, purse with 25 gp'
+            languages: 'One of your choice',
+            equipment: 'A set of fine clothes, a signet ring, a scroll of pedigree, and a purse containing 25 gp'
         }
     },
     'Sage': {
-        description: 'You spent years learning the lore of the multiverse, becoming a scholar in your field. You have a vast knowledge of history, magic, and the world\'s mysteries.',
+        description: 'You spent years learning the lore of the multiverse, becoming a learned scholar.',
         bonuses: {
             skills: ['Arcana', 'History'],
-            languages: 2,
-            equipment: 'Bottle of black ink, quill, small knife, letter from a dead colleague, common clothes, belt pouch with 10 gp'
+            languages: 'Two of your choice',
+            equipment: 'A bottle of black ink, a quill, a small knife, a letter from a dead colleague posing a question you have not yet been able to answer, a set of common clothes, and a belt pouch containing 10 gp'
         }
     },
     'Soldier': {
-        description: 'You trained as a warrior, serving in an army or militia. You understand military life, tactics, and the importance of discipline and teamwork.',
+        description: 'You trained as a warrior, serving in an army or militia.',
         bonuses: {
             skills: ['Athletics', 'Intimidation'],
-            tools: 'One type of gaming set, vehicles (land)',
-            equipment: 'Insignia of rank, trophy from a fallen enemy, set of bone dice, common clothes, belt pouch with 10 gp'
+            languages: 'None',
+            equipment: 'An insignia of rank, a trophy taken from a fallen enemy, a set of bone dice or deck of cards, a set of common clothes, and a belt pouch containing 10 gp'
         }
     },
     'Urchin': {
-        description: 'You grew up on the streets alone, orphaned, and poor. You had no one to watch over you or to provide for you, so you learned to provide for yourself.',
+        description: 'You grew up on the streets alone, orphaned, and poor, learning to survive through your wits.',
         bonuses: {
             skills: ['Sleight of Hand', 'Stealth'],
-            tools: 'Disguise kit, thieves\' tools',
-            equipment: 'Small knife, map of your hometown, pet mouse, token from your parents, common clothes, belt pouch with 10 gp'
+            languages: 'None',
+            equipment: 'A small knife, a map of the city you grew up in, a pet mouse, a token to remember your parents by, a set of common clothes, and a belt pouch containing 10 gp'
         }
     },
     'Guild Artisan': {
-        description: 'You are a member of an artisan\'s guild, skilled in a particular field and closely associated with other artisans. You understand the value of quality work and have connections in the business world.',
+        description: 'You are a member of an artisan\'s guild, skilled in a particular field and closely associated with other artisans.',
         bonuses: {
             skills: ['Insight', 'Persuasion'],
-            tools: 'One type of artisan\'s tools',
-            languages: 1,
-            equipment: 'Artisan\'s tools, letter of introduction from your guild, traveler\'s clothes, belt pouch with 15 gp'
+            languages: 'One of your choice',
+            equipment: 'A set of artisan\'s tools (one of your choice), a letter of introduction from your guild, a set of traveler\'s clothes, and a belt pouch containing 15 gp'
         }
     },
     'Charlatan': {
@@ -334,15 +330,50 @@ function getRandomElement(array) {
 
 // Function to generate ability scores based on class priorities
 function generateAbilityScoresForClass(characterClass) {
-    const standardArray = [15, 14, 13, 12, 10, 8];
-    const priorities = classStatPriority[characterClass] || ['str', 'dex', 'con', 'int', 'wis', 'cha'];
-    // Sort the standard array from highest to lowest
-    const sortedScores = [...standardArray].sort((a, b) => b - a);
-    // Assign scores to stats based on priority
-    const abilities = {};
-    for (let i = 0; i < priorities.length; i++) {
-        abilities[priorities[i]] = sortedScores[i];
+    // Base ability scores
+    let abilities = {
+        strength: 10,
+        dexterity: 10,
+        constitution: 10,
+        intelligence: 10,
+        wisdom: 10,
+        charisma: 10
+    };
+
+    // Class-specific ability score priorities
+    const classPriorities = {
+        'Barbarian': ['strength', 'constitution', 'dexterity', 'wisdom', 'charisma', 'intelligence'],
+        'Bard': ['charisma', 'dexterity', 'constitution', 'wisdom', 'intelligence', 'strength'],
+        'Cleric': ['wisdom', 'constitution', 'strength', 'charisma', 'intelligence', 'dexterity'],
+        'Druid': ['wisdom', 'constitution', 'dexterity', 'intelligence', 'charisma', 'strength'],
+        'Fighter': ['strength', 'constitution', 'dexterity', 'wisdom', 'charisma', 'intelligence'],
+        'Monk': ['dexterity', 'wisdom', 'constitution', 'strength', 'charisma', 'intelligence'],
+        'Paladin': ['strength', 'charisma', 'constitution', 'wisdom', 'dexterity', 'intelligence'],
+        'Ranger': ['dexterity', 'wisdom', 'constitution', 'strength', 'intelligence', 'charisma'],
+        'Rogue': ['dexterity', 'intelligence', 'constitution', 'wisdom', 'charisma', 'strength'],
+        'Sorcerer': ['charisma', 'constitution', 'dexterity', 'wisdom', 'intelligence', 'strength'],
+        'Warlock': ['charisma', 'constitution', 'dexterity', 'wisdom', 'intelligence', 'strength'],
+        'Wizard': ['intelligence', 'constitution', 'dexterity', 'wisdom', 'charisma', 'strength']
+    };
+
+    // Generate 4d6 drop lowest for each ability
+    const rolls = [];
+    for (let i = 0; i < 6; i++) {
+        const dice = [];
+        for (let j = 0; j < 4; j++) {
+            dice.push(Math.floor(Math.random() * 6) + 1);
+        }
+        dice.sort((a, b) => b - a);
+        rolls.push(dice[0] + dice[1] + dice[2]);
     }
+    rolls.sort((a, b) => b - a);
+
+    // Assign rolls to abilities based on class priorities
+    const priorities = classPriorities[characterClass] || classPriorities['Fighter'];
+    priorities.forEach((ability, index) => {
+        abilities[ability] = rolls[index];
+    });
+
     return abilities;
 }
 
@@ -673,23 +704,23 @@ function getRacePhysicalDescription(race, isFemale) {
 
 // Function to populate dropdowns
 function populateDropdowns() {
-    console.log('Populating dropdowns...'); // Debug log
+    console.log('Populating dropdowns...');
     
     const raceSelect = document.getElementById('raceSelect');
     const genderSelect = document.getElementById('genderSelect');
     const classSelect = document.getElementById('classSelect');
 
     if (!raceSelect || !genderSelect || !classSelect) {
-        console.error('Could not find one or more select elements');
+        console.error('Failed to find dropdown elements');
         return;
     }
 
-    // Clear existing options except the first one
+    // Clear existing options
     raceSelect.innerHTML = '<option value="">Select Race</option>';
     genderSelect.innerHTML = '<option value="">Select Gender</option>';
     classSelect.innerHTML = '<option value="">Select Class</option>';
 
-    // Populate race dropdown
+    // Add race options
     races.forEach(race => {
         const option = document.createElement('option');
         option.value = race;
@@ -697,16 +728,15 @@ function populateDropdowns() {
         raceSelect.appendChild(option);
     });
 
-    // Populate gender dropdown
-    const genders = ['Male', 'Female'];
-    genders.forEach(gender => {
+    // Add gender options
+    ['Male', 'Female'].forEach(gender => {
         const option = document.createElement('option');
         option.value = gender;
         option.textContent = gender;
         genderSelect.appendChild(option);
     });
 
-    // Populate class dropdown
+    // Add class options
     classes.forEach(characterClass => {
         const option = document.createElement('option');
         option.value = characterClass;
@@ -714,7 +744,7 @@ function populateDropdowns() {
         classSelect.appendChild(option);
     });
 
-    console.log('Dropdowns populated successfully'); // Debug log
+    console.log('Dropdowns populated successfully');
 }
 
 // Function to check if all selections are made
@@ -910,37 +940,15 @@ function generateSelectedNPC() {
 
 // Function to update the UI with NPC data
 function updateNPCDisplay(npc) {
+    // Update name
     document.getElementById('npcName').textContent = npc.name;
     
-    // Update race display to include subrace or dragonborn color
-    let raceText = npc.race;
-    if (npc.race === 'Dragonborn') {
-        raceText = `${npc.race} (${npc.dragonColor})`;
-    } else {
-        const subraceObj = getRandomSubrace(npc.race);
-        if (subraceObj) {
-            raceText = `${npc.race} (${subraceObj.name})`;
-        }
-    }
-    document.getElementById('npcRace').textContent = `${raceText} • ${npc.class}`;
-    
-    // Update physical description
-    document.getElementById('npcDescription').textContent = npc.physicalDescription;
-    
-    // Update personality details
-    const personalityTraitsList = document.getElementById('personalityTraitsList');
-    personalityTraitsList.innerHTML = '';
-    
-    // Split the personality description into sentences and create list items
-    const sentences = npc.personality.split('. ').filter(s => s.trim().length > 0);
-    sentences.forEach(sentence => {
-        const traitItem = document.createElement('li');
-        traitItem.textContent = sentence.trim();
-        personalityTraitsList.appendChild(traitItem);
-    });
-
+    // Update race, gender, class, and background
+    document.getElementById('npcRace').textContent = npc.race;
+    document.getElementById('npcGender').textContent = npc.gender;
+    document.getElementById('npcClass').textContent = npc.class;
     document.getElementById('npcBackground').textContent = npc.background;
-
+    
     // Update background details
     const backgroundDef = backgroundDefinitions[npc.background];
     if (backgroundDef) {
@@ -963,13 +971,6 @@ function updateNPCDisplay(npc) {
             bonusesList.appendChild(languagesItem);
         }
         
-        // Add tools
-        if (backgroundDef.bonuses.tools) {
-            const toolsItem = document.createElement('li');
-            toolsItem.textContent = `Tools: ${backgroundDef.bonuses.tools}`;
-            bonusesList.appendChild(toolsItem);
-        }
-        
         // Add equipment
         if (backgroundDef.bonuses.equipment) {
             const equipmentItem = document.createElement('li');
@@ -977,152 +978,57 @@ function updateNPCDisplay(npc) {
             bonusesList.appendChild(equipmentItem);
         }
     }
-
-    // Remove any existing backstory sections
-    const allDetailSections = document.querySelectorAll('.detail-section');
-    allDetailSections.forEach(section => {
-        const heading = section.querySelector('h3');
-        if (heading && heading.textContent === 'Backstory') {
-            section.remove();
-        }
-    });
-
-    // Add backstory section
-    const backstorySection = document.createElement('div');
-    backstorySection.className = 'detail-section';
-    backstorySection.innerHTML = `
-        <h3>Backstory</h3>
-        <p>${npc.backstory}</p>
-    `;
     
-    // Insert backstory section after background section
-    const backgroundSection = document.querySelector('.detail-section:has(#npcBackground)');
-    if (backgroundSection) {
-        backgroundSection.parentNode.insertBefore(backstorySection, backgroundSection.nextSibling);
-    } else {
-        // Fallback: append to the end of the details section
-        const detailsSection = document.querySelector('.npc-details');
-        if (detailsSection) {
-            detailsSection.appendChild(backstorySection);
-        }
-    }
-
     // Update ability scores
-    document.getElementById('strScore').textContent = npc.abilities.str;
-    document.getElementById('dexScore').textContent = npc.abilities.dex;
-    document.getElementById('conScore').textContent = npc.abilities.con;
-    document.getElementById('intScore').textContent = npc.abilities.int;
-    document.getElementById('wisScore').textContent = npc.abilities.wis;
-    document.getElementById('chaScore').textContent = npc.abilities.cha;
-
-    // Generate the NPC image
-    generateNPCImage(npc);
+    document.getElementById('npcStrength').textContent = npc.abilities.strength;
+    document.getElementById('npcDexterity').textContent = npc.abilities.dexterity;
+    document.getElementById('npcConstitution').textContent = npc.abilities.constitution;
+    document.getElementById('npcIntelligence').textContent = npc.abilities.intelligence;
+    document.getElementById('npcWisdom').textContent = npc.abilities.wisdom;
+    document.getElementById('npcCharisma').textContent = npc.abilities.charisma;
+    
+    // Update physical description
+    document.getElementById('npcPhysical').textContent = npc.physicalDescription;
+    
+    // Update backstory
+    document.getElementById('npcBackstory').textContent = npc.backstory;
 }
 
-// Add this function to generate the image prompt
-function generateImagePrompt(npc) {
-    const race = npc.race.toLowerCase();
-    const gender = npc.gender.toLowerCase();
-    const characterClass = npc.class.toLowerCase();
-    const physicalDesc = npc.physicalDescription.toLowerCase();
-    
-    return `A detailed portrait of a ${gender} ${race} ${characterClass} in D&D style. ${physicalDesc}. 
-    The character has a ${npc.personality.split('.')[0].toLowerCase()}. 
-    The image should be in a fantasy art style, suitable for a D&D character portrait. 
-    The background should be subtle and not distracting.`;
-}
-
-// Add this function to generate the image
-async function generateNPCImage(npc) {
-    const imageContainer = document.getElementById('npcImage');
-    const loadingSpinner = document.getElementById('imageLoading');
-    
-    // Show loading spinner
-    imageContainer.style.display = 'none';
-    loadingSpinner.style.display = 'flex';
-    
-    try {
-        const prompt = generateImagePrompt(npc);
-        
-        const response = await fetch('https://api.stability.ai/v1/generation/stable-diffusion-xl-1024-v1-0/text-to-image', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${config.STABLE_DIFFUSION_API_KEY}`,
-            },
-            body: JSON.stringify({
-                text_prompts: [
-                    {
-                        text: prompt,
-                        weight: 1
-                    }
-                ],
-                cfg_scale: 7,
-                height: 1024,
-                width: 1024,
-                samples: 1,
-                steps: 30,
-            }),
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const result = await response.json();
-        
-        // Convert the base64 image to a URL
-        const imageUrl = `data:image/png;base64,${result.artifacts[0].base64}`;
-        
-        // Update the image
-        imageContainer.src = imageUrl;
-        imageContainer.style.display = 'block';
-    } catch (error) {
-        console.error('Error generating image:', error);
-        // You might want to show an error message to the user here
-    } finally {
-        loadingSpinner.style.display = 'none';
-    }
-}
-
-// Initialize the page
+// Initialize the application when the DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM Content Loaded'); // Debug log
+    console.log('DOM loaded, initializing...');
     
-    // Populate dropdowns
-    populateDropdowns();
-    
-    // Set up event listeners for dropdowns
+    // Get DOM elements
     const raceSelect = document.getElementById('raceSelect');
     const genderSelect = document.getElementById('genderSelect');
     const classSelect = document.getElementById('classSelect');
     const generateBtn = document.getElementById('generateBtn');
     const randomBtn = document.getElementById('randomBtn');
 
-    console.log('Elements found:', { raceSelect, genderSelect, classSelect, generateBtn, randomBtn }); // Debug log
-
-    if (raceSelect) raceSelect.addEventListener('change', checkSelections);
-    if (genderSelect) genderSelect.addEventListener('change', checkSelections);
-    if (classSelect) classSelect.addEventListener('change', checkSelections);
-
-    // Set up event listener for generate button
-    if (generateBtn) {
-        generateBtn.addEventListener('click', () => {
-            console.log('Generate button clicked'); // Debug log
-            const npc = generateSelectedNPC();
-            updateNPCDisplay(npc);
-        });
+    if (!raceSelect || !genderSelect || !classSelect || !generateBtn || !randomBtn) {
+        console.error('Failed to find required DOM elements');
+        return;
     }
 
-    // Set up event listener for random button
-    if (randomBtn) {
-        randomBtn.addEventListener('click', () => {
-            console.log('Random button clicked'); // Debug log
-            const npc = generateRandomNPC();
-            updateNPCDisplay(npc);
-        });
-    }
+    console.log('Found all DOM elements, populating dropdowns...');
+    
+    // Populate dropdowns
+    populateDropdowns();
 
-    // Initial check of selections
-    checkSelections();
-}); 
+    // Add event listeners
+    raceSelect.addEventListener('change', checkSelections);
+    genderSelect.addEventListener('change', checkSelections);
+    classSelect.addEventListener('change', checkSelections);
+    generateBtn.addEventListener('click', () => {
+        const npc = generateSelectedNPC();
+        updateNPCDisplay(npc);
+    });
+    randomBtn.addEventListener('click', () => {
+        const npc = generateRandomNPC();
+        updateNPCDisplay(npc);
+    });
+
+    console.log('Initialization complete');
+});
+
+// ... rest of the existing code ... 
