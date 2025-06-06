@@ -103,6 +103,8 @@ header p {
 }
 
 .detail-section p {
+    margin-bottom: 1rem;
+    line-height: 1.6;
     color: var(--text-color);
     opacity: 0.9;
 }
