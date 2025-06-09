@@ -102,6 +102,51 @@ h3 {
     margin-bottom: 10px;
 }
 
+/* Background Details */
+.background-details {
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #000000;
+    border-radius: 4px;
+    border: 1px solid #4169e1;
+}
+
+.background-details h3 {
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.background-details h4 {
+    color: #ffffff;
+    margin: 15px 0 10px;
+}
+
+.background-details p {
+    margin-bottom: 15px;
+    line-height: 1.6;
+    color: #ffffff;
+}
+
+#backgroundBonusesList {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#backgroundBonusesList li {
+    margin-bottom: 8px;
+    padding-left: 20px;
+    position: relative;
+    color: #ffffff;
+}
+
+#backgroundBonusesList li:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #ff0000;
+}
+
 /* Ability Scores */
 .ability-scores {
     margin: 20px 0;
@@ -186,51 +231,6 @@ h3 {
 .secondary-btn:hover {
     background-color: #34495e;
     transform: translateY(-2px);
-}
-
-/* Background Details */
-.background-details {
-    margin: 20px 0;
-    padding: 15px;
-    background-color: #000000;
-    border-radius: 4px;
-    border: 1px solid #4169e1;
-}
-
-.background-details h3 {
-    color: #ffffff;
-    margin-bottom: 10px;
-}
-
-.background-details h4 {
-    color: #ffffff;
-    margin: 15px 0 10px;
-}
-
-.background-details p {
-    margin-bottom: 15px;
-    line-height: 1.6;
-    color: #ffffff;
-}
-
-#backgroundBonusesList {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
-#backgroundBonusesList li {
-    margin-bottom: 8px;
-    padding-left: 20px;
-    position: relative;
-    color: #ffffff;
-}
-
-#backgroundBonusesList li:before {
-    content: "•";
-    position: absolute;
-    left: 0;
-    color: #ff0000;
 }
 
 .personality-details {
@@ -334,4 +334,34 @@ h3 {
 .separator {
     color: #ff0000;
     margin: 0 10px;
+}
+
+/* NPC Portrait */
+.npc-portrait {
+    width: 100%;
+    max-width: 512px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+#npcImage {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 2px solid #4169e1;
+    box-shadow: 0 2px 4px rgba(255, 0, 0, 0.2);
+}
+
+.loading-spinner {
+    color: #ffffff;
+    font-size: 1.2em;
+    padding: 20px;
+    text-align: center;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
 } 
