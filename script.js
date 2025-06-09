@@ -938,90 +938,17 @@ function generateSelectedNPC() {
     };
 }
 
-// Function to generate image prompt based on NPC details
+// Function to generate image prompt
 function generateImagePrompt(npc) {
-    const gender = npc.gender.toLowerCase();
     const race = npc.race.toLowerCase();
-    const characterClass = npc.class.toLowerCase();
+    const gender = npc.gender.toLowerCase();
+    const classType = npc.class.toLowerCase();
     const background = npc.background.toLowerCase();
     
-    return `A detailed portrait of a ${gender} ${race} ${characterClass} with a ${background} background, fantasy RPG character, highly detailed digital art, dramatic lighting, professional character design, centered composition, 8k resolution`;
+    return `A ${gender} ${race} ${classType} with a ${background} background, fantasy character portrait, detailed face, dramatic lighting, high quality, 4k, fantasy art style`;
 }
 
-// Function to generate image using Stable Diffusion API
-async function generateNPCImage(npc) {
-    const imageElement = document.getElementById('npcImage');
-    const loadingElement = document.getElementById('imageLoading');
-    
-    // Show loading spinner
-    imageElement.style.display = 'none';
-    loadingElement.style.display = 'block';
-    
-    try {
-        const prompt = generateImagePrompt(npc);
-        
-        const response = await fetch('https://api.stability.ai/v1/generation/stable-diffusion-xl-1024-v1-0/text-to-image', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': 'Bearer sk-WPkNZ9sZPIIZGBdCFMXFU5fwdieqxfljvvBjxkAbrbqQePfI'
-            },
-            body: JSON.stringify({
-                text_prompts: [
-                    {
-                        text: prompt,
-                        weight: 1
-                    }
-                ],
-                cfg_scale: 7,
-                height: 1024,
-                width: 1024,
-                samples: 1,
-                steps: 30,
-            })
-        });
-
-        if (!response.ok) {
-            if (response.status === 429) {
-                throw new Error('Rate limit exceeded. Please wait a moment before generating another image.');
-            } else {
-                throw new Error(`Failed to generate image. Please try again later. (Status: ${response.status})`);
-            }
-        }
-
-        const result = await response.json();
-        
-        if (!result.artifacts || !result.artifacts[0]) {
-            throw new Error('No image was generated. Please try again.');
-        }
-        
-        // Get the base64 image data
-        const imageData = result.artifacts[0].base64;
-        
-        // Update the image source
-        imageElement.src = `data:image/png;base64,${imageData}`;
-        imageElement.style.display = 'block';
-    } catch (error) {
-        console.error('Error generating image:', error);
-        // Show user-friendly error message
-        loadingElement.textContent = error.message || 'Failed to generate portrait. Please try again.';
-        // Hide the loading spinner after 3 seconds
-        setTimeout(() => {
-            loadingElement.style.display = 'none';
-        }, 3000);
-    } finally {
-        if (loadingElement.textContent === 'Generating portrait...') {
-            loadingElement.style.display = 'none';
-        }
-    }
-}
-
-// Add a delay between image generations
-let lastImageGeneration = 0;
-const MIN_GENERATION_INTERVAL = 5000; // 5 seconds
-
-// Update the updateNPCDisplay function to include rate limiting
+// Function to update the UI with NPC data
 function updateNPCDisplay(npc) {
     // Update basic info
     document.getElementById('npcName').textContent = npc.name;
@@ -1029,6 +956,11 @@ function updateNPCDisplay(npc) {
     document.getElementById('npcGender').textContent = npc.gender;
     document.getElementById('npcClass').textContent = npc.class;
     document.getElementById('npcBackground').textContent = npc.background;
+    
+    // Generate and update portrait
+    const imagePrompt = generateImagePrompt(npc);
+    const portraitUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(imagePrompt)}`;
+    document.getElementById('npcPortrait').src = portraitUrl;
     
     // Update physical description
     document.getElementById('npcPhysical').textContent = npc.physicalDescription;
