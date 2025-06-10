@@ -957,10 +957,30 @@ function updateNPCDisplay(npc) {
     document.getElementById('npcClass').textContent = npc.class;
     document.getElementById('npcBackground').textContent = npc.background;
     
+    // Handle portrait generation
+    const portraitImg = document.getElementById('npcPortrait');
+    const loadingSpinner = document.querySelector('.loading-spinner');
+    
+    // Show loading spinner and hide current image
+    loadingSpinner.classList.add('active');
+    portraitImg.classList.remove('loaded');
+    
     // Generate and update portrait
     const imagePrompt = generateImagePrompt(npc);
     const portraitUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(imagePrompt)}`;
-    document.getElementById('npcPortrait').src = portraitUrl;
+    
+    // Create a new image object to preload
+    const newImg = new Image();
+    newImg.onload = function() {
+        portraitImg.src = portraitUrl;
+        portraitImg.classList.add('loaded');
+        loadingSpinner.classList.remove('active');
+    };
+    newImg.onerror = function() {
+        loadingSpinner.classList.remove('active');
+        console.error('Failed to load NPC portrait');
+    };
+    newImg.src = portraitUrl;
     
     // Update physical description
     document.getElementById('npcPhysical').textContent = npc.physicalDescription;

@@ -340,26 +340,42 @@ h3 {
     margin: 20px auto;
     max-width: 400px;
     text-align: center;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    border: 2px solid #4169e1;
 }
 
 .npc-portrait img {
     max-width: 100%;
     height: auto;
     border-radius: 8px;
-    border: 2px solid #4169e1;
-    box-shadow: 0 2px 4px rgba(255, 0, 0, 0.2);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.npc-portrait img.loaded {
+    opacity: 1;
 }
 
 .loading-spinner {
-    color: #ffffff;
-    font-size: 1.2em;
-    padding: 20px;
-    text-align: center;
-    animation: pulse 1.5s infinite;
+    width: 50px;
+    height: 50px;
+    border: 5px solid #4169e1;
+    border-top: 5px solid #ff0000;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    display: none;
 }
 
-@keyframes pulse {
-    0% { opacity: 0.6; }
-    50% { opacity: 1; }
-    100% { opacity: 0.6; }
+.loading-spinner.active {
+    display: block;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 } 
